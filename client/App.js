@@ -17,11 +17,13 @@ import {
 } from 'react-navigation';
 
 import Home from './screens/Home'
-import About from './screens/About'
+import Form from './screens/Form'
+
+
 
 var MainScreenNavigator = TabNavigator({
   Home: {screen: Home},
-  About: {screen: About}
+  Add: {screen: Form}
 },{
   tabBarPosition: 'bottom',
   swipeEnabled: true,

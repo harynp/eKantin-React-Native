@@ -25,7 +25,6 @@ export default class Home extends Component {
 const styles = {
     viewStyle: {
         flex: 1,
-        justContent: "center",
         alignItems: "center"
     },
     textStyle: {
