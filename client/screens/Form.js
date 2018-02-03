@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { Text, View, Button, Image, TextInput } from 'react-native'
+import { Text, View, Button, Image, TextInput, FlatList, TouchableHighlight } from 'react-native'
 import t from 'tcomb-form-native'
 import * as firebase from 'firebase'
 
@@ -12,17 +12,18 @@ var config = {
     messagingSenderId: "229357531180"
   }
   
-  firebase.initializeApp(config);
-
+const contactsApp = firebase.initializeApp(config);
+const rootRef = firebase.database().ref();
+const people = rootRef.child('contacts');
   
-
 export default class Form extends Component {
     constructor() {
         super()
         this.state = {
-            text: ''
+            name: ''
         }
     }
+
     static navigationOptions = {
         tabBarLabel: 'Add',
         tabBarIcon: ({tintColor}) => (
@@ -34,28 +35,35 @@ export default class Form extends Component {
     }
 
     
-    save() {
-        
+    save = () => {
+        people.push({
+            name : this.state.name
+        })
     }
 
-    onChangeText(name){
-        console.log(name)
+    onHandleInput= (value) => {
+        console.log(value)
+        this.setState({
+           name: value.name
+        })
     }
 
     render() {
         const { textStyle } = styles
         const Form = t.form.Form;
-        const User = t.struct({
+        const UserForm = t.struct({
             name: t.String
         });
         return (
             <View>
-                 <Form type={User} style={{flex: 1}} onChange={(text) => this.onChangeText(text)}/>
-                 <Button
-                title='Save'
-                onPress={() => this.save()}
-                />
-            </View>
+                 <Form ref="form" type={UserForm} onChangeText={(val) => this.onHandleInput(val)}/>
+                 <TouchableHighlight style={{ margin: 0}} onPress={this.save}>
+                 <Image 
+                    source={require("./ok.png")} 
+                    style={{width: 120, height: 30}}>
+                </Image>
+                 </TouchableHighlight>
+            </View>     
         )
     }
 }
